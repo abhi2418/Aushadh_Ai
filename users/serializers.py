@@ -53,7 +53,6 @@ class AuthUserLoginSerializer(serializers.Serializer):
                 'access': access_token,
                 'refresh': refresh_token,
                 'username': user.username,
-                #'full_name': user.get_full_name(),
                 'role': user.role,
                 
             }

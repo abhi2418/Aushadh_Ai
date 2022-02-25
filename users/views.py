@@ -42,36 +42,45 @@ class AuthUserRegistrationView(APIView):
 
             serializer = self.serializer_class(data=request.data)
             valid = serializer.is_valid(raise_exception=True)
-            if user.role == 2:
-                if valid:
-                    serializer_instance = serializer.save()
-                    role = 3
-                    serializer_instance.role = role
-                    serializer_instance.save()
-                    status_code = status.HTTP_201_CREATED
+            if valid:
+                if user.role == 2:
+                    
+                        serializer_instance = serializer.save()
+                        role = 3
+                        serializer_instance.role = role
+                        serializer_instance.save()
+                        status_code = status.HTTP_201_CREATED
 
-                    response = {
-                        'success': True,
-                        'statusCode': status_code,
-                        'message': 'User successfully registered!',
-                        'user': serializer.data
-                    }
+                        response = {
+                            'success': True,
+                            'statusCode': status_code,
+                            'message': 'User successfully registered!',
+                            'user': serializer.data
+                        }
 
-                    return Response(response, status=status_code)
+                        return Response(response, status=status_code)
+                else:
+                    
+                        serializer.save()
+                        status_code = status.HTTP_201_CREATED
+
+                        response = {
+                            'success': True,
+                            'statusCode': status_code,
+                            'message': 'User successfully registered!',
+                            'user': serializer.data
+                        }
+
+                        return Response(response, status=status_code)
             else:
-                if valid:
-                    serializer.save()
-                    status_code = status.HTTP_201_CREATED
+                response={
+                    'success' : False,
+                    'statusCode' : status.HTTP_409_CONFLICT,
+                    'message': 'Conflict while registration',
+                
 
-                    response = {
-                        'success': True,
-                        'statusCode': status_code,
-                        'message': 'User successfully registered!',
-                        'user': serializer.data
-                    }
-
-                    return Response(response, status=status_code)
-
+                }
+                return Response(response, status.HTTP_409_CONFLICT)
 
 
 
